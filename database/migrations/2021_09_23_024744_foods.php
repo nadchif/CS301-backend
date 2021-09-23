@@ -13,9 +13,9 @@ class Foods extends Migration
      */
     public function up()
     {
-        Schema::create('foods', function (Blueprint $table) {
+        Schema::create('food', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->unsignedDouble("price", 2);
             $table->string('photo_url');
             $table->timestamps();

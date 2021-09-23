@@ -26,13 +26,20 @@ Route::group(['prefix' => '/', 'middleware' => ['jsonify']], function () {
     Route::middleware('auth:api')->patch('user/{id}', 'App\Http\Controllers\UserController@patch');
 
     // auth & verification routes
+    Route::post('auth', 'App\Http\Controllers\LoginController@login');
     Route::get('user/verify/{id}', 'App\Http\Controllers\VerificationController@verify')->name('verification.verify');
     Route::post('user/resend', 'App\Http\Controllers\VerificationController@resend')->name('verification.resend');
     Route::post('user/forgot-password', 'App\Http\Controllers\ForgotPasswordController@requestLink')->middleware('guest')->name('password.email');
     Route::get('user/reset-password', 'App\Http\Controllers\ForgotPasswordController@resetPasswordToken')->middleware('guest')->name('password.reset');
     Route::post('user/reset-password', 'App\Http\Controllers\ForgotPasswordController@setNewPassword')->middleware('guest')->name('password.update');
 
+    //orders
+    Route::middleware('auth:api')->get('orders/{id}', 'App\Http\Controllers\OrderController@get');
+    Route::middleware('auth:api')->get('orders', 'App\Http\Controllers\OrderController@index');
 
+    //foods
+    Route::get('foods/{id}', 'App\Http\Controllers\FoodController@get');
+    Route::get('foods', 'App\Http\Controllers\FoodController@index');
 
     // API fallback
     Route::fallback('\App\Http\Controllers\ApiStatusController@fallback');
