@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -15,8 +16,22 @@ class Order extends Model
      */
     protected $fillable = [
         'order_data',
-        'user_id'
+        'user_id',
+        'tracking'
     ];
 
     protected $attributes = [];
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+    protected $casts = [
+        'order_data' => 'array',
+    ];
+
+    public function getEstimatedDelivery()
+    {
+        return Carbon::parse($this->created_at)->addMinutes(45);
+    }
 }

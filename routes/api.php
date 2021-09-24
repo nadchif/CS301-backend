@@ -34,8 +34,10 @@ Route::group(['prefix' => '/', 'middleware' => ['jsonify']], function () {
     Route::post('user/reset-password', 'App\Http\Controllers\ForgotPasswordController@setNewPassword')->middleware('guest')->name('password.update');
 
     //orders
-    Route::middleware('auth:api')->get('orders/{id}', 'App\Http\Controllers\OrderController@get');
-    Route::middleware('auth:api')->get('orders', 'App\Http\Controllers\OrderController@index');
+    Route::middleware('auth:api')->get('order/{id}', 'App\Http\Controllers\OrderController@get');
+    Route::get('order/track/{id}', 'App\Http\Controllers\OrderController@getByTracking');
+    Route::middleware('auth:api')->get('order', 'App\Http\Controllers\OrderController@index');
+    Route::middleware('auth:api')->post('order', 'App\Http\Controllers\OrderController@post');
 
     //foods
     Route::get('foods/{id}', 'App\Http\Controllers\FoodController@get');

@@ -17,6 +17,7 @@ class Orders extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->longText('order_data');
+            $table->string('tracking')->unique();
             $table->timestamps();
         });
     }
