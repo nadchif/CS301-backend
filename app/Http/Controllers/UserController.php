@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -31,7 +32,6 @@ class UserController extends Controller
                 'errors' => null,
             ), 201);
         } catch (\Exception $e) {
-
             $code = $e->getCode();
             return response()->json(array(
                 'data' => false,
@@ -39,5 +39,17 @@ class UserController extends Controller
 
             ), $code == 23000 ? 409 : 500);
         }
+    }
+
+    public function profile()
+    {
+        $currentUser = Auth::user();
+
+        $user = User::find($currentUser->id);
+
+        return response()->json(array(
+            'data' => $user,
+            'error' => null,
+        ), 200);
     }
 }

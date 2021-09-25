@@ -22,6 +22,7 @@ Route::group(['prefix' => '/', 'middleware' => ['jsonify']], function () {
     // User routes
     Route::post('user', 'App\Http\Controllers\UserController@store');
     Route::middleware('auth:api')->delete('user/{id}', 'App\Http\Controllers\UserController@delete');
+    Route::middleware('auth:api')->get('user/profile', 'App\Http\Controllers\UserController@profile');
     Route::middleware('auth:api')->get('user/{id}', 'App\Http\Controllers\UserController@get');
     Route::middleware('auth:api')->patch('user/{id}', 'App\Http\Controllers\UserController@patch');
 
@@ -35,7 +36,7 @@ Route::group(['prefix' => '/', 'middleware' => ['jsonify']], function () {
 
     //orders
     Route::middleware('auth:api')->get('order/{id}', 'App\Http\Controllers\OrderController@get');
-    Route::get('order/track/{id}', 'App\Http\Controllers\OrderController@getByTracking');
+    Route::post('order/track', 'App\Http\Controllers\OrderController@getByTracking');
     Route::middleware('auth:api')->get('order', 'App\Http\Controllers\OrderController@index');
     Route::middleware('auth:api')->post('order', 'App\Http\Controllers\OrderController@post');
 

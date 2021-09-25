@@ -60,10 +60,14 @@ class OrderController extends Controller
         ), 200);
     }
 
-    public function getByTracking($id)
+    public function getByTracking(Request $request)
     {
 
-        $order = Order::where('tracking', $id)
+        $request->validate([
+            'tracking_number' => 'required|string',
+        ]);
+
+        $order = Order::where('tracking', $request->tracking_number)
             ->first();
 
         if ($order === null) {
@@ -120,5 +124,27 @@ class OrderController extends Controller
 
             ), $code == 23000 ? 409 : 500);
         }
+    }
+
+    public function get($id)
+    {
+        $currentUser = Auth::user();
+
+
+        $order = Order::where('id', $id)
+            ->where('user_id', $currentUser->id)
+            ->first();
+        if ($order === null) {
+            return response()->json(array(
+                'data' => null,
+                'error' => "You cannot access the specified order",
+            ), 404);
+        }
+
+        $order->eta = $order->getEstimatedDelivery();
+        return response()->json(array(
+            'data' => $order,
+            'error' => null,
+        ), 200);
     }
 }
