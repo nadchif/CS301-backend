@@ -52,4 +52,41 @@ class UserController extends Controller
             'error' => null,
         ), 200);
     }
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'fullname' => 'string|min:2|nullable',
+            'contact_number' => 'string|min:2|nullable',
+            'old_password' => 'required_unless:password,null|string|nullable',
+            'password' => 'string|nullable',
+            'avatar_url' => 'string|nullable',
+        ]);
+
+        $currentUser = Auth::user();
+
+        $result = User::find($currentUser->id);
+        if ($result !== null) {
+            $user = $result;
+
+            if ($request->fullname != null) {
+                $user->fullname = $request->fullname;
+            }
+
+            if ($request->contact_number != null) {
+                $user->contact_number = $request->contact_number;
+            }
+
+            if ($request->avatar_url != null) {
+                $user->avatar_url = $request->avatar_url;
+            }
+
+            $user->save();
+
+            return response()->json(array(
+                'data' => $user,
+                'error' => null,
+            ), 200);
+        }
+        return $this->handleEntryFindResponse($result);
+    }
 }

@@ -22,9 +22,9 @@ Route::group(['prefix' => '/', 'middleware' => ['jsonify']], function () {
     // User routes
     Route::post('user', 'App\Http\Controllers\UserController@store');
     Route::middleware('auth:api')->delete('user/{id}', 'App\Http\Controllers\UserController@delete');
+    Route::middleware('auth:api')->patch('user/profile', 'App\Http\Controllers\UserController@updateProfile');
     Route::middleware('auth:api')->get('user/profile', 'App\Http\Controllers\UserController@profile');
     Route::middleware('auth:api')->get('user/{id}', 'App\Http\Controllers\UserController@get');
-    Route::middleware('auth:api')->patch('user/{id}', 'App\Http\Controllers\UserController@patch');
 
     // auth & verification routes
     Route::post('auth', 'App\Http\Controllers\LoginController@login');
